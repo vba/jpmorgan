@@ -19,7 +19,7 @@ final class Stock {
     static final Stock JOE = new Stock("JOE", COMMON, new BigDecimal("13"), new BigDecimal("250"));
     static final Stock GIN = new Stock("GIN", PREFERRED, new BigDecimal("8"), Optional.of(new BigDecimal("2")), new BigDecimal("100"));
 
-    private static final Map<String, Stock> hashedStocks = new ImmutableMap.Builder<String, Stock>()
+    private static final Map<String, Stock> hashedStocks = ImmutableMap.<String, Stock>builder()
         .put(TEA.symbol, TEA)
         .put(POP.symbol, POP)
         .put(ALE.symbol, ALE)
@@ -63,6 +63,22 @@ final class Stock {
 
     public String getSymbol() {
         return symbol;
+    }
+
+    public StockType getStockType() {
+        return stockType;
+    }
+
+    public BigDecimal getLastDividend() {
+        return lastDividend;
+    }
+
+    public Optional<BigDecimal> getFixedDividend() {
+        return fixedDividend;
+    }
+
+    public BigDecimal getParValue() {
+        return parValue;
     }
 
     @Override

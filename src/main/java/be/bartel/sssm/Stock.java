@@ -1,5 +1,6 @@
 package be.bartel.sssm;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
@@ -79,6 +80,23 @@ final class Stock {
 
     public BigDecimal getParValue() {
         return parValue;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Stock stock = (Stock) o;
+        return Objects.equal(symbol, stock.symbol) &&
+            stockType == stock.stockType &&
+            Objects.equal(lastDividend, stock.lastDividend) &&
+            Objects.equal(fixedDividend, stock.fixedDividend) &&
+            Objects.equal(parValue, stock.parValue);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(symbol, stockType, lastDividend, fixedDividend, parValue);
     }
 
     @Override

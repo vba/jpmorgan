@@ -9,12 +9,12 @@ import static com.google.common.base.Optional.fromNullable;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-public class ApplicationTest {
+public class ApplicationCommandsTest {
 
     @Test
     public void It_should_set_stock_as_expected() throws Exception {
         // Given
-        final Application sut = makeSut(null, null, null);
+        final ApplicationCommands sut = makeSut(null, null, null);
 
         // When
         sut.stock(Stock.ALE.getSymbol());
@@ -27,7 +27,7 @@ public class ApplicationTest {
     @Test
     public void It_should_not_set_stock_when_stock_is_unknown() throws Exception {
         // Given
-        final Application sut = makeSut(null, null, null);
+        final ApplicationCommands sut = makeSut(null, null, null);
 
         // When
         sut.stock("nonsense21");
@@ -44,7 +44,7 @@ public class ApplicationTest {
         final BigDecimal price = new BigDecimal(priceValue);
         final DividendCalculationService dividendCalculationService = mock(DividendCalculationService.class, RETURNS_SMART_NULLS);
         final BigDecimal actual = new BigDecimal("1");
-        final Application sut = makeSut(dividendCalculationService, null, null);
+        final ApplicationCommands sut = makeSut(dividendCalculationService, null, null);
 
         sut.currentStock = stock;
         when(dividendCalculationService.calculateDividend(stock, price)).thenReturn(actual);
@@ -56,11 +56,11 @@ public class ApplicationTest {
         verify(dividendCalculationService, new Times(1)).calculateDividend(stock, price);
     }
     
-    private Application makeSut(final DividendCalculationService dividendCalculationService,
-                                final WeightedVolumeCalculationService weightedVolumeCalculationService,
-                                final TradeStorageService tradeStorageService) {
+    private ApplicationCommands makeSut(final DividendCalculationService dividendCalculationService,
+                                        final WeightedVolumeCalculationService weightedVolumeCalculationService,
+                                        final TradeStorageService tradeStorageService) {
         
-        return new Application (
+        return new ApplicationCommands(
             fromNullable(dividendCalculationService).or(mock(DividendCalculationService.class, RETURNS_SMART_NULLS)),
             fromNullable(weightedVolumeCalculationService).or(mock(WeightedVolumeCalculationService.class, RETURNS_SMART_NULLS)),
             fromNullable(tradeStorageService).or(mock(TradeStorageService.class, RETURNS_SMART_NULLS))

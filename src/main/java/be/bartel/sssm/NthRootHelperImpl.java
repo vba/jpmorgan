@@ -1,22 +1,26 @@
 package be.bartel.sssm;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.inject.Singleton;
 
 import java.math.BigDecimal;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static java.math.RoundingMode.HALF_EVEN;
 
-final class NthRoot {
+@Singleton
+final class NthRootHelperImpl implements NthRootHelper {
 
     @VisibleForTesting
     static final int SCALE = 2;
 
-    public static BigDecimal calculate(int n, BigDecimal a) {
+    @Override
+    public BigDecimal calculate(int n, BigDecimal a) {
         return calculate(new BigDecimal(n), a, new BigDecimal("0.001"));
     }
 
-    public static BigDecimal calculate(BigDecimal root, BigDecimal number, BigDecimal p) {
+    @Override
+    public BigDecimal calculate(BigDecimal root, BigDecimal number, BigDecimal p) {
         checkArgument(number != null, "A cannot be number null");
         checkArgument(p != null, "p cannot be number null");
         checkArgument(number.compareTo(BigDecimal.ZERO) >= 0, "Only positive real numbers are accepted");

@@ -11,16 +11,17 @@ import java.math.BigDecimal;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Theories.class)
-public class NthRootTest {
+public class NthRootHelperImplTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void It_should_crash_with_a_negative_number() throws Exception {
         // Given
         final int root = 2;
         final BigDecimal number = new BigDecimal(-1);
+        final NthRootHelperImpl sut = makeSut();
 
         // When
-        NthRoot.calculate(root, number);
+        sut.calculate(root, number);
 
         // Then
     }
@@ -30,10 +31,11 @@ public class NthRootTest {
         // Given
         final int root = 2;
         final BigDecimal number = new BigDecimal(0);
+        final NthRootHelperImpl sut = makeSut();
         BigDecimal actual;
 
         // When
-        actual = NthRoot.calculate(root, number);
+        actual = sut.calculate(root, number);
 
         // Then
         assertThat(actual).isZero().withFailMessage("A nth root of 0 is 0");
@@ -44,14 +46,19 @@ public class NthRootTest {
         // Given
         final int root = dto.getBase();
         final BigDecimal number = dto.getNumber();
+        final NthRootHelperImpl sut = makeSut();
         BigDecimal actual;
 
         // When
-        actual = NthRoot.calculate(root, number);
+        actual = sut.calculate(root, number);
 
         // Then
-        assertThat(actual).isEqualTo(dto.getResult().setScale(NthRoot.SCALE))
+        assertThat(actual).isEqualTo(dto.getResult().setScale(NthRootHelperImpl.SCALE, BigDecimal.ROUND_HALF_EVEN))
             .withFailMessage("A square root of "+dto.getNumber()+" is "+ dto.getResult());
+    }
+
+    private NthRootHelperImpl makeSut() {
+        return new NthRootHelperImpl();
     }
 
     @DataPoints

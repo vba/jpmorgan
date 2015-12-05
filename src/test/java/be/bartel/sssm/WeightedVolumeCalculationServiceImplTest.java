@@ -1,12 +1,12 @@
 package be.bartel.sssm;
 
 import com.flextrade.jfixture.JFixture;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Set;
 
 import static be.bartel.sssm.Stock.ALE;
 import static be.bartel.sssm.Trade.createBuyTrade;
@@ -34,7 +34,7 @@ public class WeightedVolumeCalculationServiceImplTest {
         BigDecimal actual;
 
         // When
-        when(tradeStorageService.getLastTrades(stock)).thenReturn(ImmutableList.of());
+        when(tradeStorageService.getLastTrades(stock)).thenReturn(ImmutableSet.of());
         actual = sut.calculate(stock);
 
         // Then
@@ -46,7 +46,7 @@ public class WeightedVolumeCalculationServiceImplTest {
     public void It_should_make_banal_calculation_as_expected() throws Exception {
         // Given
         final Stock stock = Stock.ALE;
-        final List<Trade> trades = ImmutableList.of(
+        final Set<Trade> trades = ImmutableSet.of(
             createBuyTrade(ALE, now(), 2, new BigDecimal(10)),
             createBuyTrade(ALE, now(), 3, new BigDecimal(20))
         );

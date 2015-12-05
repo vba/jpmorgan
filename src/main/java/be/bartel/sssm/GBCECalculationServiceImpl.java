@@ -10,17 +10,21 @@ import static java.util.stream.Collectors.toList;
 
 public class GBCECalculationServiceImpl implements GBCECalculationService {
     private final TradeStorageService tradeStorageService;
+    private final NthRootHelper nthRootHelper;
 
     @Override
     public BigDecimal calculateAllSharedIndex() {
-        final List<BigDecimal> prices = tradeStorageService.getAllTrades().stream().map(x -> x.getTradedPrice()).collect(toList());
-        final BigDecimal reduced = prices.stream().reduce(BigDecimal.ZERO, (accumulated, x) -> accumulated.add(x));
-        return NthRoot.calculate(prices.size(), reduced);
+        final List<BigDecimal> prices = tradeStorageService.getAllTrades().stream().map(Trade::getTradedPrice).collect(toList());
+        final BigDecimal reduced = prices.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+        return this.nthRootHelper.calculate(prices.size(), reduced);
     }
 
     @Inject
-    public GBCECalculationServiceImpl(TradeStorageService tradeStorageService) {
+    public GBCECalculationServiceImpl(TradeStorageService tradeStorageService, NthRootHelper nthRootHelper) {
         checkArgument(tradeStorageService != null, "Trade storage service cannot be a null");
+        checkArgument(nthRootHelper != null, "Nth root helper cannot be a null");
+
+        this.nthRootHelper = nthRootHelper;
         this.tradeStorageService = tradeStorageService;
     }
 }

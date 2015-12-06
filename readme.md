@@ -1,10 +1,10 @@
 Remarks
 =======
 * Supplied formulas are not homogeneous in term of mathematical operations signs. One formula uses a cross "x" and another one uses a point ".". It brings useless ambiguity to the test.
-	```
+```
 	(∑ Traded Price x Quantity) / ∑ Quantity
 	(Fixed Dividend . Par Value) / Price
-	```
+```
 * P/E ration formula seems ambiguous because of Dividend denominator. What does it means? Last dividend, fixed dividend, dividend yield or something else? I took first option, but I'm not sure that it's correct.
 
 * I'm using BigDecimal type for all currency manipulation. I'm not sure that it can be an optimal approach in the case of geometric mean, in most basic cases it can be overkill. It can be possible to proceed by logarithm, find the arithmetic mean and then exponentiate. I don't have enough of details to define which approach is most appropriate for this case.

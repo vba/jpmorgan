@@ -12,7 +12,7 @@ public class Application {
         Injector injector = Guice.createInjector(new GuiceConfig());
         ApplicationCommands applicationCommands = injector.getInstance(ApplicationCommands.class);
         final Shell consoleShell = ShellFactory
-            .createConsoleShell("SSSM welcomes you ", "", applicationCommands);
+            .createConsoleShell("SSSM", "SSSM welcomes you, use ?l to start", applicationCommands);
 
         consoleShell.commandLoop();
     }

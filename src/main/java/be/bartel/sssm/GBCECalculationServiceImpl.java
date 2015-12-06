@@ -15,7 +15,7 @@ public class GBCECalculationServiceImpl implements GBCECalculationService {
     @Override
     public BigDecimal calculateAllSharedIndex() {
         final List<BigDecimal> prices = tradeStorageService.getAllTrades().stream().map(Trade::getTradedPrice).collect(toList());
-        final BigDecimal reduced = prices.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+        final BigDecimal reduced = prices.stream().reduce(BigDecimal.ZERO, BigDecimal::multiply);
         return this.nthRootHelper.calculate(prices.size(), reduced);
     }
 

@@ -17,6 +17,7 @@ final public class ApplicationCommands {
 
     private final DividendCalculationService dividendCalculationService;
     private final WeightedVolumeCalculationService weightedVolumeCalculationService;
+    private final GBCECalculationService gbceCalculationService;
     private final TradeStorageService tradeStorageService;
 
     @VisibleForTesting
@@ -81,6 +82,14 @@ final public class ApplicationCommands {
     }
 
     @Command
+    public void volumeWeightedStockPrice() {
+        checkCurrentStock();
+        out.println("Calculate volume weighted stock price for "+ currentStock.getSymbol());
+        final BigDecimal result = this.weightedVolumeCalculationService.calculate(currentStock);
+        out.println("Volume weighted stock price calculation result is "+result);
+    }
+
+    @Command
     public void buyNow(long shareQuantity, String tradedPrice) {
         checkCurrentStock();
         out.println("Buy now for current stock "+ currentStock.getSymbol());
@@ -94,6 +103,13 @@ final public class ApplicationCommands {
         tradeStorageService.buy(currentStock, Instant.parse(timestamp), shareQuantity, new BigDecimal(tradedPrice));
     }
 
+    @Command
+    public void calculateGBCE() {
+        out.println("Calculate the GBCE All Share Index of all prices for all stocks");
+        final BigDecimal result = gbceCalculationService.calculateAllSharedIndex();
+        out.println("GBCE calculation result is "+result);
+    }
+
     private void checkCurrentStock() {
         if (currentStock == null) {
             throw new IllegalStateException("Stock isn't set, please use stock command before");
@@ -103,10 +119,12 @@ final public class ApplicationCommands {
     @Inject
     public ApplicationCommands(DividendCalculationService dividendCalculationService,
                                WeightedVolumeCalculationService weightedVolumeCalculationService,
+                               GBCECalculationService gbceCalculationService,
                                TradeStorageService tradeStorageService) {
 
         this.dividendCalculationService = dividendCalculationService;
         this.weightedVolumeCalculationService = weightedVolumeCalculationService;
+        this.gbceCalculationService = gbceCalculationService;
         this.tradeStorageService = tradeStorageService;
     }
 
